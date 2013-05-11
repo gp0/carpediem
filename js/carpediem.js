@@ -34,10 +34,13 @@ function days_between(date1, date2) {
 
 }
 
-function draw(radius, multiplierTotal, multiplierElapsed) {
+function draw(radius, multiplierTotal, multiplierElapsed, perspective) {
 
-	totalWeeks = multiplierTotal * lifeExpectancy;
+	
 
+	timeSpan = multiplierTotal * lifeExpectancy;
+
+	perspectiveTimeSpan = timeSpan;
 
 	// Store the current date and time
 	var current_date = new Date()
@@ -52,7 +55,7 @@ function draw(radius, multiplierTotal, multiplierElapsed) {
 	}
 	// Call the days_between function
 
-	var weeksElapsed = Math.round(days_between(current_date, birthday) / multiplierElapsed);
+	var timeSpanElapsed = Math.round(days_between(current_date, birthday) / multiplierElapsed);
 
 
 	var timeWastedTotal = 0;
@@ -60,13 +63,10 @@ function draw(radius, multiplierTotal, multiplierElapsed) {
 	$("input[name=timewaster]:checked").each(function () {
 
 
-		timeWastedTotal = timeWastedTotal + Math.round($(this).val() * totalWeeks);
-		timeWastedElapsed = timeWastedElapsed + Math.round($(this).val() * weeksElapsed);
+		timeWastedTotal = timeWastedTotal + Math.round($(this).val() * timeSpan);
+		timeWastedElapsed = timeWastedElapsed + Math.round($(this).val() * timeSpanElapsed);
 
 	});
-
-
-
 
 	var timeLeftCaption;
 	if (multiplierTotal == 52) {
@@ -80,11 +80,11 @@ function draw(radius, multiplierTotal, multiplierElapsed) {
 	}
 
 	var plural;
-	if ((totalWeeks - weeksElapsed > 1)) {
+	if ((timeSpan - timeSpanElapsed > 1)) {
 		plural = "s"
 	}
 
-	$("#timeLeft").html(Math.round((totalWeeks - weeksElapsed)) + " " + timeLeftCaption + plural + " left.");
+	$("#timeLeft").html(Math.round((timeSpan - timeSpanElapsed)) + " " + timeLeftCaption + plural + " left.");
 
 	$("#legend").html("&#9679; " + "1 " + timeLeftCaption);
 
@@ -108,29 +108,26 @@ function draw(radius, multiplierTotal, multiplierElapsed) {
 		var totalCirclesPerLine = Math.round(canvas.width / (margin + radius));
 
 		// ceiling, last line can be partial 
-		var totalLines = Math.ceil(totalWeeks / totalCirclesPerLine);
+		var totalLines = Math.ceil(timeSpan / totalCirclesPerLine);
 
 		Y = margin;
 		week = 0;
 
 		counter = 0;
 
-		totalWeeksCheck = totalWeeks - weeksElapsed;
+		timeSpanCheck = timeSpan - timeSpanElapsed;
+		
 
-		while (totalWeeks > 0) {
+		var lastCircleInLine;
+		while (timeSpan > 0) {
 			var X = margin + radius;
 			i = 1;
-			while (i <= totalCirclesPerLine && totalWeeks > 0) {
+			while (i <= totalCirclesPerLine && timeSpan > 0) {
 
 				i++;
-				totalWeeks--;
+				timeSpan--;
 
-
-				// are we wasting time?
-				if (timeWastedElapsed > 0) {
-
-				}
-				if (totalWeeks > totalWeeksCheck) {
+				if (timeSpan > timeSpanCheck) {
 					if (timeWastedElapsed != null && timeWastedElapsed > 0) {
 						timeWastedElapsed--;
 						color = '#0088CC';
@@ -156,16 +153,61 @@ function draw(radius, multiplierTotal, multiplierElapsed) {
 				context.closePath();
 
 				X = X + margin + radius;
+				lastCircleInLine = i;
 
 			}
 			Y = Y + margin + radius;
 
 		}
+		
+		//draw perspectives
+
+		// substract lifetime from perspective time
+		perspective = perspective - perspectiveTimeSpan;
+
+		color = "#FF8800"
+		while (perspective > 0) {
+
+
+			//figure out if we are continuing a line of dots
+			if (lastCircleInLine > 0) {
+				i = lastCircleInLine;
+
+				//reset coordinates
+				Y = Y - (margin + radius);
+
+				//reset last dot counter
+				lastCircleInLine = 0;
+			} else {
+				i = 1;
+				X = margin + radius;
+			}
+
+			while (i <= totalCirclesPerLine && perspective > 0) {
+
+				i++;
+				perspective--;
+		
+				counter++;
+
+				context.beginPath();
+				context.arc(X, Y, radius, 0, 2 * Math.PI, false);
+				context.fillStyle = color;
+				context.fill();
+				context.closePath();
+
+				X = X + margin + radius;
+
+			}
+			Y = Y + margin + radius;
+
+		}
+
 	};
 
 }
 
-function init(radius, multiplierTotal, multiplierElapsed) {
+function init(radius, multiplierTotal, multiplierElapsed, perspective) {
 
 	timeWaster = $("input[name=timewaster]:checked").val();
 
@@ -195,15 +237,11 @@ function init(radius, multiplierTotal, multiplierElapsed) {
 
 			})).then(function () {
 
-				draw(radius, multiplierTotal, multiplierElapsed);
+				draw(radius, multiplierTotal, multiplierElapsed, perspective);
 
 			});
-
-
-
-
 		});
 	} else {
-		draw(radius, multiplierTotal, multiplierElapsed);
+		draw(radius, multiplierTotal, multiplierElapsed, perspective);
 	}
 }

@@ -78,19 +78,26 @@
 						</div>
 						<div class="row">
 							<form class="form-inline">
+								<h5>Perspective</h5>
 								<div class="btn-group">
 									<button type="button" onClick="javascript:init(2,52,7)" class="btn">Weeks</button>
 									<button type="button" onClick="javascript:init(3,12,30)" class="btn">Months</button>
 									<button type="button" onClick="javascript:init(5,1,365)" class="btn">Years</button>
 
 								</div>
-									<h5>Timewasters:</h5>
+									<h5>Timewasters</h5>
 
 								<label class="checkbox inline">
 									<input name="timewaster" type="checkbox" data-toggle="tooltip" title="8 Hours per day"value="0.3333333333">sleep</label>
 								<label class="checkbox inline">
 									<input name="timewaster" type="checkbox" data-toggle="tooltip" title="8 Hours per day, 5 Days a week" value="0.238095238">work</label>
 
+								<h5>More perspectives</h5>
+								<div class="btn-group">
+									<button type="button" onClick="javascript:init(5,1,365,100)" class="btn btn-warning">100 Years</button>
+									<button type="button" onClick="javascript:init(3,1,365,1000)" class="btn btn-warning">1000 Years</button>
+									<button type="button" onClick="javascript:init(1,1,365,15000)" class="btn btn-warning">15k Years</button>
+								</div>								
 
 							</form>
 						</div>
