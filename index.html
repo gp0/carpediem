@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Carpe Diem</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+		<style type="text/css">
+			.center {
+				float: none;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			body {
+				background: url("squairy_light.png");
+			}
+			
+		</style>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+		<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+		<script>
+			(function (i, s, o, g, r, a, m) {
+				i['GoogleAnalyticsObject'] = r;
+				i[r] = i[r] || function () {
+					(i[r].q = i[r].q || []).push(arguments)
+				}, i[r].l = 1 * new Date();
+				a = s.createElement(o),
+				m = s.getElementsByTagName(o)[0];
+				a.async = 1;
+				a.src = g;
+				m.parentNode.insertBefore(a, m)
+			})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+			ga('create', 'UA-40589813-1', 'theblog.de');
+			ga('send', 'pageview');
+		</script>
+
+		<script type="text/javascript" src="js/carpediem.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="page-header">
+					<h1>Carpe Diem</h1>
+
+			</div>
+			<div class="span10 center">
+				<div class="row well">
+					<div class="span5 inner-span">
+						<p class="form-inline">
+							<label for="birthday">Birthday</label>
+							<input class="input-medium" id="birthday" type="text" name="birthday">
+							<label for="sex">Sex</label>
+							<select class="input-small" id="sex" name="sex">
+								<option>M</option>
+								<option>W</option>
+							</select>
+							<input type="button" class="btn btn-primary" name="draw" onClick="javascript:init(2,52,7)" value="Show me">
+						</p>
+						<canvas class="img-polaroid" id="weeks" width="400" height="400"></canvas>
+						<p><small>
+											<span id="legend">&#9679; 1 Week</span>
+											<span style="color: #DEDEDE;">&#9679;</span> past
+											<span style="color: black;">&#9679;</span> future
+											<span style="color: #0088CC">&#9679;</span> time wasted
+										</small>
+
+						</p>
+					</div>
+					<div class="span4 inner-span">
+						<div class="row">
+							<blockquote>
+								<p>Enter your birthday and sex. Life expectancy based on geo-location of your ip.</p>	<small>Data source: <cite title="World Bank"><a href="http://data.worldbank.org/developers/api-overview">http://data.worldbank.org/developers/api-overview</a></cite>
+												</small>
+
+							</blockquote>
+						</div>
+						<div class="row">
+							<form class="form-inline">
+								<div class="btn-group">
+									<button type="button" onClick="javascript:init(2,52,7)" class="btn">Weeks</button>
+									<button type="button" onClick="javascript:init(3,12,30)" class="btn">Months</button>
+									<button type="button" onClick="javascript:init(5,1,365)" class="btn">Years</button>
+
+								</div>
+									<h5>Timewasters:</h5>
+
+								<label class="checkbox inline">
+									<input name="timewaster" type="checkbox" data-toggle="tooltip" title="8 Hours per day"value="0.3333333333">sleep</label>
+								<label class="checkbox inline">
+									<input name="timewaster" type="checkbox" data-toggle="tooltip" title="8 Hours per day, 5 Days a week" value="0.238095238">work</label>
+
+
+							</form>
+						</div>
+						<div class="row">
+								<h3 id="timeLeft"></h3>
+
+						</div>
+						<div class="row">
+							<hr>
+							<p>a <a href="http://theblog.de">theblog.de</a> project.
+								<p><small>tips: <a href="bitcoin:1FoEWBy6FK5cU7vXjbbmidK6w7pMaweSCK">1FoEWBy6FK5cU7vXjbbmidK6w7pMaweSCK</a></small>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
