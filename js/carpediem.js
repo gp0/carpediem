@@ -231,9 +231,19 @@ function init(radius, multiplierTotal, multiplierElapsed, perspective) {
 
 		).then(function () {
 			$.when(
-				$.getJSON(urlWorldBank, function (data2) {
+				$.getJSON(urlWorldBank, function (data2, status, xhr) {
 
-				lifeExpectancy = data2[1][0].value;
+				if ( xhr.status == 200 ) {
+					
+					lifeExpectancy = data2[1][0].value;
+				} else {
+					alert("API unavailable, using fallback data (US)");
+					if (sex == "M") {
+						lifeExpectancy = 78.2;
+					} else {
+						lifeExpectancy = 81.1;
+					}
+				}
 
 			})).then(function () {
 
