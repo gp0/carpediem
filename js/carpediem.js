@@ -6,6 +6,7 @@ $(document).ready(function () {
 		$('input[type=checkbox]').tooltip();
 });
 
+
 $(function () {
 	$("#birthday").datepicker({
 		changeMonth: true,
@@ -16,6 +17,19 @@ $(function () {
 		maxDate: 0
 	});
 });
+
+// the world bank api returns jsonp objects with a lowercase prefix, this works around that
+function world_bank_api_hack() {
+	$.ajaxSetup({
+	  beforeSend: function(xhr, settings) {
+	      var origCallback = settings.jsonpCallback;
+	      settings.url = settings.url.replace(/=jQuery/, "=jquery");
+	      window[origCallback.toLowerCase()] = function() {
+	          window[origCallback].apply(this, arguments);
+	      }
+	  }
+	});
+}
 
 function days_between(date1, date2) {
 
@@ -230,11 +244,12 @@ function init(radius, multiplierTotal, multiplierElapsed, perspective) {
 		})
 
 		).then(function () {
+			//hack to work around world bank api returning lower case prefixes
+			world_bank_api_hack();
+
 			$.when(
 				$.getJSON(urlWorldBank, function (data2, status, xhr) {
-
 				if ( xhr.status == 200 ) {
-					
 					lifeExpectancy = data2[1][0].value;
 				} else {
 					alert("API unavailable, using fallback data (US)");
